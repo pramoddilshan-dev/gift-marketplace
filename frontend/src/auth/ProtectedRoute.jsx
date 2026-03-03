@@ -1,14 +1,29 @@
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
-export default function ProtectedRoute({ children, roles }) {
+export default function ProtectedRoute({ children, roles = [] }) {
   const { user, loading } = useContext(AuthContext);
+  const location = useLocation();
 
-  if (loading) return <p>Loading...</p>;
-  if (!user) return <Navigate to="/login" replace />;
+  // Wait until auth state is resolved
+  if (loading) {
+    return <p>Checking authentication...</p>;
+  }
 
-  if (roles && !roles.includes(user.role)) {
+  // Not logged in
+  if (!user) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location }}
+      />
+    );
+  }
+
+  // Role restriction
+  if (roles.length > 0 && !roles.includes(user.role)) {
     return <Navigate to="/" replace />;
   }
 

@@ -1,14 +1,13 @@
-// src/api/auth.api.js
-import axios from "./axios";
+import api from "./axios";
 
-// Login function
+// Login
 export const loginApi = async (payload) => {
-  const response = await axios.post("/auth/login", payload);
+  const response = await api.post("/auth/login", payload);
   return response.data;
 };
 
-// Register function
+// Register
 export const registerApi = async (payload) => {
-  const response = await axios.post("/auth/register", payload);
+  const response = await api.post("/auth/register", payload);
   return response.data;
 };

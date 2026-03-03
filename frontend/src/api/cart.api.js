@@ -1,9 +1,23 @@
-import api from "./axios";
+import api from "./axios"; // your configured axios instance
 
-export const getCart = () => api.get("/cart");
+// Get current user's cart
+export const getCart = () => {
+  return api.get("/api/cart");
+};
 
-export const addToCart = (payload) =>
-  api.post("/cart", payload);
+// Add item to cart
+export const addToCart = (data) => {
+  return api.post("/api/cart", data);
+};
 
-export const removeFromCart = (cartItemId) =>
-  api.delete(`/cart/${cartItemId}`);
+// Update cart item quantity
+export const updateCartItem = (data) => {
+  return api.put("/api/cart", data);
+  // If your backend uses different route like /api/cart/:id,
+  // adjust accordingly.
+};
+
+// Remove item from cart
+export const removeCartItem = (productId) => {
+  return api.delete(`/api/cart/${productId}`);
+};
