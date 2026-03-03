@@ -1,5 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-import api from "../api/axios";
+import { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext(null);
 
@@ -9,15 +8,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       setLoading(false);
       return;
     }
 
-    api.get("/auth/me")
-      .then(res => setUser(res.data))
-      .catch(() => localStorage.removeItem("token"))
-      .finally(() => setLoading(false));
+    // TEMP: we don’t call /auth/me yet
+    // Just mark user as logged-in if token exists
+    setUser({ role: "customer" }); // default placeholder
+    setLoading(false);
   }, []);
 
   return (

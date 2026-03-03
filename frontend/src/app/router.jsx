@@ -10,33 +10,43 @@ import CartPage from "../features/cart/CartPage";
 import AdminDashboard from "../features/admin/AdminDashboard";
 import SellerDashboard from "../features/seller/SellerDashboard";
 
+import MainLayout from "../layouts/MainLayout";
+
 export const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/products", element: <Products /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
   {
-    path: "/cart",
-    element: (
-      <ProtectedRoute roles={["customer"]}>
-        <CartPage />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/admin",
-    element: (
-      <ProtectedRoute roles={["admin"]}>
-        <AdminDashboard />
-      </ProtectedRoute>
-    )
-  },
-  {
-    path: "/seller",
-    element: (
-      <ProtectedRoute roles={["seller"]}>
-        <SellerDashboard />
-      </ProtectedRoute>
-    )
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <Products /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+
+      {
+        path: "cart",
+        element: (
+          <ProtectedRoute roles={["customer"]}>
+            <CartPage />
+          </ProtectedRoute>
+        )
+      },
+
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute roles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )
+      },
+
+      {
+        path: "seller",
+        element: (
+          <ProtectedRoute roles={["seller"]}>
+            <SellerDashboard />
+          </ProtectedRoute>
+        )
+      }
+    ]
   }
 ]);
