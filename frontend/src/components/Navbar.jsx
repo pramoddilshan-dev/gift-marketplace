@@ -9,6 +9,8 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
+  const toggleMenu = () => setMenuOpen((open) => !open);
+
   // debounced search
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,7 +33,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-container container">
         <div className="nav-left">
-          <Link to="/" className="navbar-brand">
+          <Link to="/" className="navbar-brand" onClick={() => setMenuOpen(false)}>
             <div className="brand-logo">🎁</div>
             <div className="brand-text">
               <div className="brand-title">Gift Marketplace</div>
@@ -48,33 +50,65 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="navbar-menu">
-          <Link to="/" className="nav-link">Products</Link>
+        <button
+          type="button"
+          className={`navbar-toggle ${menuOpen ? "active" : ""}`}
+          onClick={toggleMenu}
+          aria-label="Toggle navigation"
+        >
+          <span className="bar" />
+        </button>
+
+        <div className={`navbar-menu ${menuOpen ? "active" : ""}`}>
+          <Link to="/" className="nav-link" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          <Link to="/products" className="nav-link" onClick={() => setMenuOpen(false)}>
+            Products
+          </Link>
 
           {user?.role === "customer" && (
             <>
-              <Link to="/cart" className="nav-link">Cart</Link>
-              <Link to="/account" className="nav-link">My Account</Link>
+              <Link to="/cart" className="nav-link" onClick={() => setMenuOpen(false)}>
+                Cart
+              </Link>
+              <Link to="/account" className="nav-link" onClick={() => setMenuOpen(false)}>
+                My Account
+              </Link>
             </>
           )}
 
           {user?.role === "seller" && (
-            <Link to="/seller" className="nav-link">Seller Dashboard</Link>
+            <Link to="/seller" className="nav-link" onClick={() => setMenuOpen(false)}>
+              Seller Dashboard
+            </Link>
           )}
 
           {user?.role === "admin" && (
-            <Link to="/admin" className="nav-link">Admin</Link>
+            <Link to="/admin" className="nav-link" onClick={() => setMenuOpen(false)}>
+              Admin
+            </Link>
           )}
 
           {!user ? (
             <>
-              <Link to="/login" className="nav-link">Login</Link>
-              <Link to="/register" className="nav-link btn-primary">Register</Link>
+              <Link to="/login" className="nav-link" onClick={() => setMenuOpen(false)}>
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="nav-link btn-primary"
+                onClick={() => setMenuOpen(false)}
+              >
+                Register
+              </Link>
             </>
           ) : (
             <>
               <span className="nav-user">{user.name}</span>
-              <button onClick={logout} className="btn-secondary">Logout</button>
+              <button onClick={logout} className="btn-secondary">
+                Logout
+              </button>
             </>
           )}
         </div>

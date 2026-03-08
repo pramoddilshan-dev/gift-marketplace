@@ -6,7 +6,7 @@ export default function MainLayout() {
   return (
     <>
       <Navbar />
-      <main style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <main className="app-main">
         <Outlet />
       </main>
       <Footer />

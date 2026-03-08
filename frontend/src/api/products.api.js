@@ -13,7 +13,7 @@ export const getProductById = (id) => api.get(`/products/${id}`);
 
 // Seller/Admin operations
 export const createProduct = (data) =>
-  api.post("/products", data, { headers: { "Content-Type": "multipart/form-data" } });
+  api.post("/products", data);
 export const updateProduct = (id, data) =>
-  api.put(`/products/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  api.put(`/products/${id}`, data);
 export const deleteProduct = (id) => api.delete(`/products/${id}`);

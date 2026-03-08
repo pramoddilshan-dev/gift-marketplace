@@ -11,6 +11,7 @@ export default function SellerDashboard() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showProductForm, setShowProductForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -44,8 +45,14 @@ export default function SellerDashboard() {
     }
   };
 
-  const handleAddProduct = async (e) => {
+  const resetForm = () => {
+    setFormData({ name: "", description: "", price: "", image: null });
+    setEditingProduct(null);
+  };
+
+  const handleSaveProduct = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.price) {
       setError("Name and price are required");
       return;
@@ -58,16 +65,38 @@ export default function SellerDashboard() {
     if (formData.image) data.append("image", formData.image);
 
     try {
-      await createProduct(data);
-      setSuccess("Product added successfully");
+      if (editingProduct) {
+        await updateProduct(editingProduct.id, data);
+        setSuccess("Product updated successfully");
+      } else {
+        await createProduct(data);
+        setSuccess("Product added successfully");
+      }
+
       setTimeout(() => setSuccess(""), 3000);
-      setFormData({ name: "", description: "", price: "", image: null });
+      resetForm();
       setShowProductForm(false);
       fetchData();
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to add product");
+      setError(
+        err.response?.data?.message ||
+          (editingProduct ? "Failed to update product" : "Failed to add product")
+      );
     }
   };
+
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setFormData({
+      name: product.name || "",
+      description: product.description || "",
+      price: product.price || "",
+      image: null
+    });
+    setShowProductForm(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
 
   const handleDeleteProduct = async (productId) => {
     if (!window.confirm("Delete this product?")) return;
@@ -176,9 +205,24 @@ export default function SellerDashboard() {
                   />
                 </div>
 
-                <button type="submit" className="btn-primary">
-                  Add Product
-                </button>
+                <div className="flex gap-2" style={{ alignItems: "center" }}>
+                  <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+                    {editingProduct ? "Save Changes" : "Add Product"}
+                  </button>
+                  {editingProduct && (
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      style={{ flex: 1 }}
+                      onClick={() => {
+                        resetForm();
+                        setShowProductForm(false);
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </form>
             </div>
           )}
@@ -206,6 +250,13 @@ export default function SellerDashboard() {
                   <p className="text-tertiary text-sm mb-2">{product.description}</p>
                   <p className="text-lg font-bold text-primary mb-4">Rs {parseFloat(product.price).toLocaleString()}</p>
                   <div className="flex gap-2">
+                    <button
+                      className="btn-secondary"
+                      onClick={() => handleEditProduct(product)}
+                      style={{ flex: 1 }}
+                    >
+                      Edit
+                    </button>
                     <button
                       className="btn-danger"
                       onClick={() => handleDeleteProduct(product.id)}

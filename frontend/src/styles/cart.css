@@ -93,7 +93,7 @@
 }
 
 .summary-row span:first-child {
-  color: var(--gray-600);
+  color: var(--text-secondary);
 }
 
 .summary-row span:last-child {

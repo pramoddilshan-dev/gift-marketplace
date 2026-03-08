@@ -30,8 +30,8 @@ export const createProduct = async (req, res) => {
 
     res.status(201).json(product);
   } catch (error) {
-    console.error("Create product error:", error.message);
-    res.status(500).json({ message: "Failed to create product" });
+    console.error("Create product error:", error);
+    res.status(500).json({ message: error.message || "Failed to create product" });
   }
 };
 
@@ -140,8 +140,8 @@ export const updateProduct = async (req, res) => {
     await product.save();
     res.json(product);
   } catch (error) {
-    console.error("Update product error:", error.message);
-    res.status(500).json({ message: "Failed to update product" });
+    console.error("Update product error:", error);
+    res.status(500).json({ message: error.message || "Failed to update product" });
   }
 };
 
@@ -166,7 +166,7 @@ export const deleteProduct = async (req, res) => {
 
     res.json({ message: "Product removed successfully" });
   } catch (error) {
-    console.error("Delete product error:", error.message);
-    res.status(500).json({ message: "Failed to delete product" });
+    console.error("Delete product error:", error);
+    res.status(500).json({ message: error.message || "Failed to delete product" });
   }
 };
