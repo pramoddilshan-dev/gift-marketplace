@@ -161,8 +161,8 @@ export default function SellerDashboard() {
 
           {showProductForm && (
             <div className="card mb-4">
-              <h4>Add New Product</h4>
-              <form onSubmit={handleAddProduct}>
+              <h4>{editingProduct ? "Edit Product" : "Add New Product"}</h4>
+              <form onSubmit={handleSaveProduct}>
                 <div className="form-group">
                   <label>Product Name *</label>
                   <input
@@ -235,7 +235,7 @@ export default function SellerDashboard() {
                 <div key={product.id} className="card">
                   {product.image_url && (
                     <img
-                      src={`http://localhost:5000/uploads/products/${product.image_url}`}
+                      src={`http://localhost:5000/${product.image_url}`}
                       alt={product.name}
                       style={{
                         width: "100%",

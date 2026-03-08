@@ -19,12 +19,14 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ message: "Price must be a valid number > 0" });
     }
 
+    const imagePath = req.file ? req.file.path.replace(/\\/g, "/") : null;
+
     const product = await Product.create({
       name: name.trim(),
       description,
       price: Number(price),
       category_id: category_id || null,
-      image_url: req.file ? req.file.path : null,
+      image_url: imagePath,
       seller_id: req.user.id
     });
 
@@ -135,7 +137,7 @@ export const updateProduct = async (req, res) => {
     if (name !== undefined) product.name = name.trim();
     if (description !== undefined) product.description = description;
     if (price !== undefined) product.price = Number(price);
-    if (req.file) product.image_url = req.file.path;
+    if (req.file) product.image_url = req.file.path.replace(/\\/g, "/");
 
     await product.save();
     res.json(product);

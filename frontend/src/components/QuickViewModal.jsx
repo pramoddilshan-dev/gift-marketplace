@@ -51,7 +51,7 @@ export default function QuickViewModal({ productId, open, onClose, onAdded }) {
           <div className="modal-content">
             <div className="modal-image">
               {product.image_url ? (
-                <img src={`http://localhost:5000/uploads/products/${product.image_url}`} alt={product.name} />
+                <img src={`http://localhost:5000/${product.image_url}`} alt={product.name} />
               ) : (
                 <div className="placeholder-image">No Image</div>
               )}

@@ -101,7 +101,7 @@ export default function HomePage() {
             <div key={p.id} className="card product-card">
               <div className="product-image">
                 {p.image_url ? (
-                  <img src={`http://localhost:5000/uploads/products/${p.image_url}`} alt={p.name} />
+                  <img src={`http://localhost:5000/${p.image_url}`} alt={p.name} />
                 ) : (
                   <div className="placeholder-image">No Image</div>
                 )}

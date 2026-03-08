@@ -225,7 +225,7 @@ export default function Products() {
                 <div className="product-image">
                   {p.image_url ? (
                     <img
-                      src={`http://localhost:5000/uploads/products/${p.image_url}`}
+                      src={`http://localhost:5000/${p.image_url}`}
                       alt={p.name}
                     />
                   ) : (
