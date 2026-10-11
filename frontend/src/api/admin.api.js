@@ -1,11 +1,17 @@
-import api from "./axios";
+import API from './axios';
 
-// Users management
-export const getAllUsers = () => api.get("/admin/users");
-export const toggleUserStatus = (userId) => api.put(`/admin/users/${userId}/toggle`);
+export const getAllUsers = async () => {
+  return await API.get('/admin/users');
+};
 
-// Orders management
-export const getAllOrders = () => api.get("/admin/orders");
+export const toggleUserStatus = async (id) => {
+  return await API.put(`/admin/users/${id}/toggle-status`);
+};
 
-// Products management
-export const deactivateProduct = (productId) => api.put(`/admin/products/${productId}/deactivate`);
+export const getAllOrders = async () => {
+  return await API.get('/admin/orders');
+};
+
+export const adminDeactivateProduct = async (id) => {
+  return await API.put(`/admin/products/${id}/deactivate`);
+};

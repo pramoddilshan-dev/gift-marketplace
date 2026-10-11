@@ -1,7 +1,13 @@
-import api from "./axios";
+import API from './axios';
 
-export const getMyOrders = () => api.get("/orders");
-// payload may contain shipping_address, phone
-export const checkout = (payload) => api.post("/orders/checkout", payload);
-// buy now for a single product
-export const buyNow = (payload) => api.post("/orders/buy", payload);
+export const checkoutOrder = async (data) => {
+  return await API.post('/orders/checkout', data);
+};
+
+export const buyProductNow = async (data) => {
+  return await API.post('/orders/buy-now', data);
+};
+
+export const getMyOrders = async () => {
+  return await API.get('/orders/my-orders');
+};

@@ -1,21 +1,17 @@
-import api from "./axios"; // your configured axios instance
+import API from './axios';
 
-// Get current user's cart
-export const getCart = () => {
-  return api.get("/cart");
+export const getCart = async () => {
+  return await API.get('/cart');
 };
 
-// Add item to cart
-export const addToCart = (data) => {
-  return api.post("/cart", data);
+export const addToCart = async (data) => {
+  return await API.post('/cart', data);
 };
 
-// Update cart item quantity
-export const updateCartItem = (data) => {
-  return api.put("/cart", data);
+export const updateCartItem = async (data) => {
+  return await API.put('/cart', data);
 };
 
-// Remove item from cart
-export const removeCartItem = (cartItemId) => {
-  return api.delete(`/cart/${cartItemId}`);
+export const removeFromCart = async (id) => {
+  return await API.delete(`/cart/${id}`);
 };

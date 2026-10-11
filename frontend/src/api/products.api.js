@@ -1,19 +1,25 @@
-import api from "./axios";
+import API from './axios';
 
-// fetch products with optional pagination and category filter
-// options: { page, category }
-export const getProducts = (options = {}) => {
-  const { page = 1, category, search } = options;
-  let url = `/products?page=${page}`;
-  if (category) url += `&category=${category}`;
-  if (search) url += `&search=${encodeURIComponent(search)}`;
-  return api.get(url);
+export const getProducts = async (params) => {
+  return await API.get('/products', { params });
 };
-export const getProductById = (id) => api.get(`/products/${id}`);
 
-// Seller/Admin operations
-export const createProduct = (data) =>
-  api.post("/products", data);
-export const updateProduct = (id, data) =>
-  api.put(`/products/${id}`, data);
-export const deleteProduct = (id) => api.delete(`/products/${id}`);
+export const getProductById = async (id) => {
+  return await API.get(`/products/${id}`);
+};
+
+export const createProduct = async (productData) => {
+  return await API.post('/products', productData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+export const updateProduct = async (id, productData) => {
+  return await API.put(`/products/${id}`, productData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+export const deleteProduct = async (id) => {
+  return await API.delete(`/products/${id}`);
+};
