@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express"; // ✅ FIX: import express
+import cors from "cors"; // ✅ ADD: import cors
 import app from "./src/app.js";
 import sequelize from "./src/config/database.js";
 import User from "./src/models/User.js"; // import your models
@@ -23,6 +24,29 @@ const initDb = async () => {
     console.error("DB connection failed:", error);
   }
 };
+
+// ✅ ADD: CORS Middleware at Preflight Options (Ilagay bago ang mga routes)
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: [
+      "X-CSRF-Token",
+      "X-Requested-With",
+      "Accept",
+      "Accept-Version",
+      "Content-Length",
+      "Content-MD5",
+      "Content-Type",
+      "Date",
+      "X-Api-Version",
+      "Authorization",
+    ],
+  })
+);
+
+app.options("*", cors());
 
 // Middleware setup
 app.use("/api/test", testRoutes);
