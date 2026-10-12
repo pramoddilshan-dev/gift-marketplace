@@ -12,25 +12,20 @@ import sellerRoutes from "./src/routes/sellerRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import productRoutes from "./src/routes/productRoutes.js";
+import serverless from "serverless-http";
 
-const PORT = process.env.PORT || 5000;
-
-const startServer = async () => {
+// Database sync and initialization function
+const initDb = async () => {
   try {
-    // Sync all models
-    await sequelize.sync({ alter: true }); // Creates tables if they don't exist
+    await sequelize.sync({ alter: true });
     console.log("All models synced successfully!");
-
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
   } catch (error) {
     console.error("DB connection failed:", error);
   }
 };
 
+// Middleware setup
 app.use("/api/test", testRoutes);
-
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
@@ -38,12 +33,24 @@ app.use("/api/products", productRoutes);
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.use("/api/categories", categoryRoutes);
-
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
-
 app.use("/api/seller", sellerRoutes);
-
 app.use("/api/admin", adminRoutes);
 
-startServer();
+// Local development logic
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  initDb().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running locally on port ${PORT}`);
+    });
+  });
+} else {
+  // Sync DB on serverless execution
+  initDb();
+}
+
+// Export for Vercel Serverless Function
+export default app;
+export const handler = serverless(app);
